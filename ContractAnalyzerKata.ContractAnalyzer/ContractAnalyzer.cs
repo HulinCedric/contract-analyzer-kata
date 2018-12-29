@@ -7,9 +7,14 @@ namespace ContractAnalyzerKata.ContractAnalyzer
     {
         public ContractAnalyzer()
         {
-            Violations = Enumerable.Empty<object>();
+            Violations = new List<UnderAgeViolation>();
         }
 
-        public IEnumerable<object> Violations { get; }
+        public IList<UnderAgeViolation> Violations { get; }
+
+        public void Analyze(Contract contract)
+        {
+            Violations.Add(new UnderAgeViolation());
+        }
     }
 }

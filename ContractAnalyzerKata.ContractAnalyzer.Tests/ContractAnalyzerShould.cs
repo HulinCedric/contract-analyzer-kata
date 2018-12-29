@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Xunit;
 
 namespace ContractAnalyzerKata.ContractAnalyzer.Tests
@@ -19,6 +21,20 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
 
             Assert.NotNull(contractAnalyzer.Violations);
             Assert.Empty(contractAnalyzer.Violations);
+        }
+        
+        [Fact]
+        public void ContainsAnUnderAgeViolationWhenUserAgeIsUnder18YearsOld()
+        {
+            var contractAnalyzer = new ContractAnalyzer();
+            var user = new User { DateOfBirth = DateTime.Now };
+            var contract = new Contract { User = user };
+
+            contractAnalyzer.Analyze(contract);
+
+            Assert.NotEmpty(contractAnalyzer.Violations);
+            Assert.NotEmpty(contractAnalyzer.Violations.OfType<UnderAgeViolation>());
+            Assert.Single(contractAnalyzer.Violations.OfType<UnderAgeViolation>());
         }
     }
 }
