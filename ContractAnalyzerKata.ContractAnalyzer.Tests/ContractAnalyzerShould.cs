@@ -27,7 +27,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         public void ContainsAnUnderAgeViolationWhenUserAgeIsUnder18YearsOld()
         {
             var contractAnalyzer = new ContractAnalyzer();
-            var user = new User { DateOfBirth = DateTime.Now.AddYears(-17) };
+            var user = new User { DateOfBirth = DateTime.Today.AddYears(-17) };
             var contract = new Contract { User = user };
 
             contractAnalyzer.Analyze(contract);
@@ -41,7 +41,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         public void ContainsEmptyViolationsWhenUserAgeIsOver18YearsOld()
         {
             var contractAnalyzer = new ContractAnalyzer();
-            var user = new User { DateOfBirth = DateTime.Now.AddYears(-21) };
+            var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
             var contract = new Contract { User = user };
 
             contractAnalyzer.Analyze(contract);
@@ -53,7 +53,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         public void ContainsEmptyViolationsWhenUserAgeIsEqual18YearsOld()
         {
             var contractAnalyzer = new ContractAnalyzer();
-            var user = new User { DateOfBirth = DateTime.Now.AddYears(-18) };
+            var user = new User { DateOfBirth = DateTime.Today.AddYears(-18) };
             var contract = new Contract { User = user };
 
             contractAnalyzer.Analyze(contract);
