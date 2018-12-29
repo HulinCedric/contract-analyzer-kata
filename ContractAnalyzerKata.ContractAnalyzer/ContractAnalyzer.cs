@@ -6,18 +6,20 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 {
     public class ContractAnalyzer
     {
+        private readonly IList<UnderAgeViolation> _violations;
+
         public ContractAnalyzer()
         {
-            Violations = new List<UnderAgeViolation>();
+            _violations = new List<UnderAgeViolation>();
         }
 
-        public IList<UnderAgeViolation> Violations { get; }
+        public IEnumerable<UnderAgeViolation> Violations => _violations;
 
         public void Analyze(Contract contract)
         {
             if (contract.User.DateOfBirth > DateTime.Now.AddYears(-18))
             {
-                Violations.Add(new UnderAgeViolation());
+                _violations.Add(new UnderAgeViolation());
             }
         }
     }
