@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ContractAnalyzerKata.ContractAnalyzer</AssemblyName>
-    <RootNamespace>ContractAnalyzerKata.ContractAnalyzer</RootNamespace>
   </PropertyGroup>
 
 </Project>
