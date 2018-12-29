@@ -22,12 +22,12 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             Assert.NotNull(contractAnalyzer.Violations);
             Assert.Empty(contractAnalyzer.Violations);
         }
-        
+
         [Fact]
         public void ContainsAnUnderAgeViolationWhenUserAgeIsUnder18YearsOld()
         {
             var contractAnalyzer = new ContractAnalyzer();
-            var user = new User { DateOfBirth = DateTime.Now };
+            var user = new User { DateOfBirth = DateTime.Now.AddYears(-17) };
             var contract = new Contract { User = user };
 
             contractAnalyzer.Analyze(contract);
@@ -35,6 +35,30 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             Assert.NotEmpty(contractAnalyzer.Violations);
             Assert.NotEmpty(contractAnalyzer.Violations.OfType<UnderAgeViolation>());
             Assert.Single(contractAnalyzer.Violations.OfType<UnderAgeViolation>());
+        }
+
+        [Fact]
+        public void ContainsEmptyViolationsWhenUserAgeIsOver18YearsOld()
+        {
+            var contractAnalyzer = new ContractAnalyzer();
+            var user = new User { DateOfBirth = DateTime.Now.AddYears(-21) };
+            var contract = new Contract { User = user };
+
+            contractAnalyzer.Analyze(contract);
+
+            Assert.Empty(contractAnalyzer.Violations);
+        }
+
+        [Fact]
+        public void ContainsEmptyViolationsWhenUserAgeIsEqual18YearsOld()
+        {
+            var contractAnalyzer = new ContractAnalyzer();
+            var user = new User { DateOfBirth = DateTime.Now.AddYears(-18) };
+            var contract = new Contract { User = user };
+
+            contractAnalyzer.Analyze(contract);
+
+            Assert.Empty(contractAnalyzer.Violations);
         }
     }
 }

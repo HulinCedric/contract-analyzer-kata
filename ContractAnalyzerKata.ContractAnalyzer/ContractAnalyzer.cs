@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ContractAnalyzerKata.ContractAnalyzer
@@ -14,7 +15,10 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 
         public void Analyze(Contract contract)
         {
-            Violations.Add(new UnderAgeViolation());
+            if (contract.User.DateOfBirth > DateTime.Now.AddYears(-18))
+            {
+                Violations.Add(new UnderAgeViolation());
+            }
         }
     }
 }
