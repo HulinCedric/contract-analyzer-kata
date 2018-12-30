@@ -7,18 +7,12 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 {
     public class ContractAnalyzer
     {
-        private readonly IList<Violation> _violations;
+        private readonly IList<Violation> _violations = new List<Violation>();
         private readonly IFraudDetector _fraudDetector;
 
-        public ContractAnalyzer() : this(new FraudDetectorAdapter())
-        {
-        }
+        public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
-        public ContractAnalyzer(IFraudDetector fraudDetector)
-        {
-            _violations = new List<Violation>();
-            _fraudDetector = fraudDetector;
-        }
+        public ContractAnalyzer(IFraudDetector fraudDetector) => _fraudDetector = fraudDetector;
 
         public IEnumerable<Violation> Violations => _violations;
 
