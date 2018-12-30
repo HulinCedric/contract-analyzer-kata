@@ -18,14 +18,23 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 
         public void Analyze(Contract contract)
         {
-            if (contract.User.DateOfBirth > DateTime.Today.AddYears(-18))
-            {
-                _violations.Add(new UnderAgeViolation());
-            }
+            UnderAgeRuleCheck(contract);
+            FraudRuleCheck(contract);
+        }
 
+        private void FraudRuleCheck(Contract contract)
+        {
             if (_fraudDetector.IsFraudDetected(contract))
             {
                 _violations.Add(new FraudViolation());
+            }
+        }
+
+        private void UnderAgeRuleCheck(Contract contract)
+        {
+            if (contract.User.DateOfBirth > DateTime.Today.AddYears(-18))
+            {
+                _violations.Add(new UnderAgeViolation());
             }
         }
     }
