@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExternalLibrary.FraudDetector;
@@ -8,11 +8,11 @@ namespace ContractAnalyzerKata.ContractAnalyzer
     public class ContractAnalyzer
     {
         private readonly IList<Violation> _violations = new List<Violation>();
-        private readonly IFraudDetector _fraudDetector;
+        private readonly FraudRule _fraudRule;
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
-        public ContractAnalyzer(IFraudDetector fraudDetector) => _fraudDetector = fraudDetector;
+        public ContractAnalyzer(IFraudDetector fraudDetector) => _fraudRule = new FraudRule(fraudDetector);
 
         public IEnumerable<Violation> Violations => _violations;
 
@@ -24,9 +24,10 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 
         private void FraudRuleCheck(Contract contract)
         {
-            if (_fraudDetector.IsFraudDetected(contract))
+            _fraudRule.Check(contract);
+            if (_fraudRule.HasViolation)
             {
-                _violations.Add(new FraudViolation());
+                _violations.Add(_fraudRule.Violation);
             }
         }
 
