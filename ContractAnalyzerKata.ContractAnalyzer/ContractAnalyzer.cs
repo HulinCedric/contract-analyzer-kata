@@ -8,10 +8,16 @@ namespace ContractAnalyzerKata.ContractAnalyzer
     public class ContractAnalyzer
     {
         private readonly IList<Violation> _violations;
+        private readonly FraudDetector _fraudDetector;
 
-        public ContractAnalyzer()
+        public ContractAnalyzer() : this(new FraudDetector())
+        {
+        }
+
+        public ContractAnalyzer(FraudDetector fraudDetector)
         {
             _violations = new List<Violation>();
+            _fraudDetector = fraudDetector;
         }
 
         public IEnumerable<Violation> Violations => _violations;
@@ -23,8 +29,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer
                 _violations.Add(new UnderAgeViolation());
             }
 
-            var fraudDetector = new FraudDetector();
-            if (fraudDetector.IsCustomerFraudDetected(contract.User.FirstName,
+            if (_fraudDetector.IsCustomerFraudDetected(contract.User.FirstName,
                                                       contract.User.LastName,
                                                       contract.User.DateOfBirth))
             {
