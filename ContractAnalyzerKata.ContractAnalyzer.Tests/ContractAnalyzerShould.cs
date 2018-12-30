@@ -60,5 +60,19 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
 
             Assert.Empty(contractAnalyzer.Violations);
         }
+
+        [Fact]
+        public void ContainsAFraudViolationWhenFraudIsDetected()
+        {
+            var contractAnalyzer = new ContractAnalyzer();
+            var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
+            var contract = new Contract { User = user };
+
+            contractAnalyzer.Analyze(contract);
+
+            Assert.NotEmpty(contractAnalyzer.Violations);
+            Assert.NotEmpty(contractAnalyzer.Violations.OfType<FraudViolation>());
+            Assert.Single(contractAnalyzer.Violations.OfType<FraudViolation>());
+        }
     }
 }

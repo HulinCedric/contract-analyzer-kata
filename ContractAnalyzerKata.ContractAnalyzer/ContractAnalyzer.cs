@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExternalLibrary.FraudDetector;
 
 namespace ContractAnalyzerKata.ContractAnalyzer
 {
@@ -20,6 +21,14 @@ namespace ContractAnalyzerKata.ContractAnalyzer
             if (contract.User.DateOfBirth > DateTime.Today.AddYears(-18))
             {
                 _violations.Add(new UnderAgeViolation());
+            }
+
+            var fraudDetector = new FraudDetector();
+            if (fraudDetector.IsCustomerFraudDetected(contract.User.FirstName,
+                                                      contract.User.LastName,
+                                                      contract.User.DateOfBirth))
+            {
+                _violations.Add(new FraudViolation());
             }
         }
     }
