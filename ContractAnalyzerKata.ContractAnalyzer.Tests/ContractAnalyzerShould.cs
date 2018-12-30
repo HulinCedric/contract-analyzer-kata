@@ -30,8 +30,8 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             var mockFraudDetector = new Mock<IFraudDetector>();
             mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
             var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
-            var user = new User { DateOfBirth = DateTime.Today.AddYears(-17) };
-            var contract = new Contract { User = user };
+            var user = new User("FirstName", "LastName", DateTime.Today.AddYears(-17));
+            var contract = new Contract("ContractName", user);
 
             contractAnalyzer.Analyze(contract);
 
@@ -46,8 +46,8 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             var mockFraudDetector = new Mock<IFraudDetector>();
             mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
             var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
-            var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
-            var contract = new Contract { User = user };
+            var user = new User("FirstName", "LastName", DateTime.Today.AddYears(-21));
+            var contract = new Contract("ContractName", user);
 
             contractAnalyzer.Analyze(contract);
 
@@ -60,8 +60,8 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             var mockFraudDetector = new Mock<IFraudDetector>();
             mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
             var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
-            var user = new User { DateOfBirth = DateTime.Today.AddYears(-18) };
-            var contract = new Contract { User = user };
+            var user = new User("FirstName", "LastName", DateTime.Today.AddYears(-18));
+            var contract = new Contract("ContractName", user);
 
             contractAnalyzer.Analyze(contract);
 
@@ -74,8 +74,8 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             var mockFraudDetector = new Mock<IFraudDetector>();
             mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(true);
             var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
-            var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
-            var contract = new Contract { User = user };
+            var user = new User("FirstName", "LastName", DateTime.Today.AddYears(-21));
+            var contract = new Contract("ContractName", user);
 
             contractAnalyzer.Analyze(contract);
 
@@ -90,10 +90,10 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             var mockFraudDetector = new Mock<IFraudDetector>();
             mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(true);
             var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
-            var userUnder18 = new User { DateOfBirth = DateTime.Today.AddYears(-17) };
-            var contractOne = new Contract { User = userUnder18 };
-            var userOver18 = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
-            var contractTwo = new Contract { User = userOver18 };
+            var userUnder18 = new User("FirstName1", "LastName1", DateTime.Today.AddYears(-17));
+            var contractOne = new Contract("Contract1", userUnder18);
+            var userOver18 = new User("FirstName2", "LastName2", DateTime.Today.AddYears(-21));
+            var contractTwo = new Contract("Contract2", userOver18);
 
             contractAnalyzer.Analyze(contractOne);
             contractAnalyzer.Analyze(contractTwo);

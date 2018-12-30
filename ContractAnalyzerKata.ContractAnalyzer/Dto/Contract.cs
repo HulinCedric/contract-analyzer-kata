@@ -2,7 +2,9 @@
 {
     public class Contract
     {
-        public string Name { get; set; }
-        public User User { get; set; }
+        public Contract(string name, User user) => (Name, User) = (name, user);
+
+        public string Name { get; }
+        public User User { get; }
     }
 }
