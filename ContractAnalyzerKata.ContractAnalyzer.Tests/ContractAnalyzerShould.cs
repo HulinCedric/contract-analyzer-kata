@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Moq;
 using Xunit;
 
 namespace ContractAnalyzerKata.ContractAnalyzer.Tests
@@ -26,7 +27,9 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         [Fact]
         public void ContainsAnUnderAgeViolationWhenUserAgeIsUnder18YearsOld()
         {
-            var contractAnalyzer = new ContractAnalyzer();
+            var mockFraudDetector = new Mock<IFraudDetector>();
+            mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
+            var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
             var user = new User { DateOfBirth = DateTime.Today.AddYears(-17) };
             var contract = new Contract { User = user };
 
@@ -40,7 +43,9 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         [Fact]
         public void ContainsEmptyViolationsWhenUserAgeIsOver18YearsOld()
         {
-            var contractAnalyzer = new ContractAnalyzer();
+            var mockFraudDetector = new Mock<IFraudDetector>();
+            mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
+            var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
             var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
             var contract = new Contract { User = user };
 
@@ -52,13 +57,31 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
         [Fact]
         public void ContainsEmptyViolationsWhenUserAgeIsEqual18YearsOld()
         {
-            var contractAnalyzer = new ContractAnalyzer();
+            var mockFraudDetector = new Mock<IFraudDetector>();
+            mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(false);
+            var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
             var user = new User { DateOfBirth = DateTime.Today.AddYears(-18) };
             var contract = new Contract { User = user };
 
             contractAnalyzer.Analyze(contract);
 
             Assert.Empty(contractAnalyzer.Violations);
+        }
+
+        [Fact]
+        public void ContainsAFraudViolationWhenFraudIsDetected()
+        {
+            var mockFraudDetector = new Mock<IFraudDetector>();
+            mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(true);
+            var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
+            var user = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
+            var contract = new Contract { User = user };
+
+            contractAnalyzer.Analyze(contract);
+
+            Assert.NotEmpty(contractAnalyzer.Violations);
+            Assert.NotEmpty(contractAnalyzer.Violations.OfType<FraudViolation>());
+            Assert.Single(contractAnalyzer.Violations.OfType<FraudViolation>());
         }
     }
 }

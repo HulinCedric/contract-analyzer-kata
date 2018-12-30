@@ -1,5 +1,5 @@
 namespace ContractAnalyzerKata.ContractAnalyzer
 {
-    public class UnderAgeViolation : Violation
+    public class FraudViolation : Violation
     { }
 }
