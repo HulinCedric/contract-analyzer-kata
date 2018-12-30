@@ -7,7 +7,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 {
     public class ContractAnalyzer
     {
-        private IEnumerable<Rule> _rules;
+        private IEnumerable<Rule> _rules = Enumerable.Empty<Rule>();
         private readonly IFraudDetector _fraudDetector;
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
