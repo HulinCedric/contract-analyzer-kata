@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExternalLibrary.FraudDetector;
@@ -9,6 +9,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer
     {
         private readonly IList<Violation> _violations = new List<Violation>();
         private readonly FraudRule _fraudRule;
+        private readonly UnderAgeRule _underAgeRule = new UnderAgeRule();
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
@@ -33,9 +34,10 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 
         private void UnderAgeRuleCheck(Contract contract)
         {
-            if (contract.User.DateOfBirth > DateTime.Today.AddYears(-18))
+            _underAgeRule.Check(contract);
+            if (_underAgeRule.HasViolation)
             {
-                _violations.Add(new UnderAgeViolation());
+                _violations.Add(_underAgeRule.Violation);
             }
         }
     }
