@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,14 +6,14 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 {
     public class ContractAnalyzer
     {
-        private readonly IList<UnderAgeViolation> _violations;
+        private readonly IList<Violation> _violations;
 
         public ContractAnalyzer()
         {
-            _violations = new List<UnderAgeViolation>();
+            _violations = new List<Violation>();
         }
 
-        public IEnumerable<UnderAgeViolation> Violations => _violations;
+        public IEnumerable<Violation> Violations => _violations;
 
         public void Analyze(Contract contract)
         {
