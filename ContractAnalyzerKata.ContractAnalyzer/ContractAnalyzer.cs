@@ -8,8 +8,8 @@ namespace ContractAnalyzerKata.ContractAnalyzer
     public class ContractAnalyzer
     {
         private readonly IList<Violation> _violations = new List<Violation>();
-        private readonly FraudRule _fraudRule;
-        private readonly UnderAgeRule _underAgeRule = new UnderAgeRule();
+        private readonly Rule _fraudRule;
+        private readonly Rule _underAgeRule = new UnderAgeRule();
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
