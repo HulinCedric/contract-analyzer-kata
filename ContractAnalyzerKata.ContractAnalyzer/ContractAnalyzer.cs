@@ -7,35 +7,36 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 {
     public class ContractAnalyzer
     {
-        private readonly IList<Violation> _violations = new List<Violation>();
+        private IEnumerable<Rule> _rules = Enumerable.Empty<Rule>();
         private readonly IFraudDetector _fraudDetector;
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
-        public ContractAnalyzer(IFraudDetector fraudDetector) => _fraudDetector = fraudDetector;
+        public ContractAnalyzer(IFraudDetector fraudDetector)
+        {
+            _fraudDetector = fraudDetector;
+            ResetRules();
+        }
 
-        public IEnumerable<Violation> Violations => _violations;
+        public IEnumerable<Violation> Violations => _rules.Where(rule => rule.HasViolation).Select(rule => rule.Violation);
 
         public void Analyze(Contract contract)
         {
-            UnderAgeRuleCheck(contract);
-            FraudRuleCheck(contract);
+            ResetRules();
+            CheckRules(contract);
         }
 
-        private void FraudRuleCheck(Contract contract)
+        private void CheckRules(Contract contract)
         {
-            if (_fraudDetector.IsFraudDetected(contract))
+            foreach (var rule in _rules)
             {
-                _violations.Add(new FraudViolation());
+                rule.Check(contract);
             }
         }
 
-        private void UnderAgeRuleCheck(Contract contract)
+        private void ResetRules()
         {
-            if (contract.User.DateOfBirth > DateTime.Today.AddYears(-18))
-            {
-                _violations.Add(new UnderAgeViolation());
-            }
+            _rules = RuleFactory.GetRules(_fraudDetector);
         }
     }
 }
