@@ -12,10 +12,7 @@ namespace ContractAnalyzerKata.ContractAnalyzer
 
         public ContractAnalyzer() : this(new FraudDetectorAdapter()) { }
 
-        public ContractAnalyzer(IFraudDetector fraudDetector) => _rules = new List<Rule> {
-            new UnderAgeRule(),
-            new FraudRule(fraudDetector)
-        };
+        public ContractAnalyzer(IFraudDetector fraudDetector) => _rules = RuleFactory.GetRules(fraudDetector);
 
         public IEnumerable<Violation> Violations => _violations;
 
