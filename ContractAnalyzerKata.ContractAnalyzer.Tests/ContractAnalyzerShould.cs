@@ -83,5 +83,25 @@ namespace ContractAnalyzerKata.ContractAnalyzer.Tests
             Assert.NotEmpty(contractAnalyzer.Violations.OfType<FraudViolation>());
             Assert.Single(contractAnalyzer.Violations.OfType<FraudViolation>());
         }
+
+        [Fact]
+        public void ContainsOnlyViolationsOfTheLastAnalyzedContract()
+        {
+            var mockFraudDetector = new Mock<IFraudDetector>();
+            mockFraudDetector.Setup(f => f.IsFraudDetected(It.IsAny<Contract>())).Returns(true);
+            var contractAnalyzer = new ContractAnalyzer(mockFraudDetector.Object);
+            var userUnder18 = new User { DateOfBirth = DateTime.Today.AddYears(-17) };
+            var contractOne = new Contract { User = userUnder18 };
+            var userOver18 = new User { DateOfBirth = DateTime.Today.AddYears(-21) };
+            var contractTwo = new Contract { User = userOver18 };
+
+            contractAnalyzer.Analyze(contractOne);
+            contractAnalyzer.Analyze(contractTwo);
+
+            Assert.NotEmpty(contractAnalyzer.Violations);
+            Assert.NotEmpty(contractAnalyzer.Violations.OfType<FraudViolation>());
+            Assert.Single(contractAnalyzer.Violations.OfType<FraudViolation>());
+            Assert.Empty(contractAnalyzer.Violations.OfType<UnderAgeViolation>());
+        }
     }
 }
